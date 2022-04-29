@@ -1,2 +1,5 @@
 # dapong
- A simple pong game, made using Python + Pygame
+ A simple pong game, made using Python + Pygame  
+
+ You must install PyGame in order to run this game.  
+ You can install it using 'pip install pygame'.
