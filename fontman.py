@@ -8,7 +8,7 @@ def drawFps(font, fps):      # Creates text surface with FPS counter and color d
     if fps > 40:
         color = (0, 128, 0)   # Green text
     if fps <= 40:
-        color = (128, 128, 0) # Yello text
+        color = (128, 128, 0) # Yellow text
     if fps <= 20:
         color = (128, 0, 0)   # Red text
     return font.render("FPS:" + str(int(fps)), True, color)  # Create text surface

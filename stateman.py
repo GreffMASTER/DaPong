@@ -23,16 +23,16 @@ states = {      # State dictionary
 }
 
 # Variables
-drawfps = False
-message = {
+drawfps = False     # If fps counter should be drawn on screen
+message = {         # Used to display a message in top left corner of the screen for x amount of time
     "text":"",
     "time":0
 }
 
 # Hooks
 curstate = None # Current state hook
-screen = None
-clock = None
+screen = None   # Game's main screen
+clock = None    # Game's main clock
 
 def change(statestr,scrn,sett=None):          # Change current state
     global curstate
@@ -43,7 +43,7 @@ def change(statestr,scrn,sett=None):          # Change current state
         print("No such state as",statestr)
         sys.exit()
 
-def init(scrn,sett=None):                # Call function to initiate the current state
+def init(scrn,sett=None):           # Call function to initiate the current state
     if "init" in dir(curstate):
         curstate.init(scrn,sett)
 
@@ -105,20 +105,20 @@ def quit():                         # Call function when the game window is clos
         curstate.quit()
     sys.exit()
 
-def printMsg(string,time=1):
+def printMsg(string,time=1):        # Print a message in top left corner of the screen for x amount of time
     global message
     message["text"] = string
     message["time"] = time
 
 def takeScreenshot(scrn):           # Takes a screenshot of a given screen
-    curtime = datetime.now()
-    datestr = curtime.strftime("%d.%m.%Y_%H-%M-%S")
+    curtime = datetime.now()                                                        # Get current time and date
+    datestr = curtime.strftime("%d.%m.%Y_%H-%M-%S")                                 # Format the date and time
     x, y = scrn.get_size()
-    rect = pygame.Rect(0, 0, x, y)
-    if not os.path.exists("screenshots"):
+    rect = pygame.Rect(0, 0, x, y)                                                  # Select entire window
+    if not os.path.exists("screenshots"):                                           # If 'screenshots' folder doesn't exist, create it
         os.mkdir("screenshots")
-    filename = "DaPongScreenshot_"+datestr+".png"
-    pygame.image.save(scrn.subsurface(rect), os.path.join("screenshots", filename))
-    printMsg("Screenshot saved as "+filename,3)
+    filename = "DaPongScreenshot_"+datestr+".png"                                   # Prepare filename string
+    pygame.image.save(scrn.subsurface(rect), os.path.join("screenshots", filename)) # Save screenshot
+    printMsg("Screenshot saved as "+filename,3)                                     # Display message
 
 # EOF
