@@ -7,7 +7,7 @@ import pygame, sys, os      # Import important stuff
 import stateman as state    # Import the state manager  
 from fontman import fonts   # Import font list
 
-version = "dev_02.05.22"    # Version of the program
+version = "dev_09.05.22"    # Version of the program
 
 # Additional functions
 
@@ -50,6 +50,7 @@ def main(argc, argv):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:                               # Quit event 
                 state.quit()
+                pygame.quit()
                 running = False
             elif event.type == pygame.KEYDOWN:                          # Key pressed once event
                 state.keypressed(event.key, event.mod)

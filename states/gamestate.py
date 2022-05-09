@@ -47,12 +47,6 @@ ypos = 200
 ai = False
 offset = 100
 
-# Sounds
-
-scoreSfx = None
-wallBncSfx = None
-paddBncSfx = None
-
 # Functions
 
 def init(scrn,sett=None):
@@ -169,7 +163,7 @@ def update(dt,clock):
         if ballpos["y"] < paddle1["pos"]+110 and ballpos["y"] > paddle1["pos"]-10:  # If ball is in range of paddle width
             if ballacc["x"] < 0:                                                    # Only if ball is going towards the paddle
                 ballacc["x"] = abs(ballacc["x"])                # Reverse x acceleration
-                ballacc["x"] += 0.1                             # Increase ball speed
+                ballacc["x"] += 0.25                            # Increase ball speed
                 ballacc["y"] = ballacc["y"]+paddle1["acc"]/2    # Influence ball y momentum with paddle's momentum
                 if ballacc["y"] >= 8 or ballacc["y"] <= -8:     # If ball is going too fast on y axis
                     ballacc["y"] /= 2                           # Slow it down
@@ -179,7 +173,7 @@ def update(dt,clock):
         if ballpos["y"] < paddle2["pos"]+110 and ballpos["y"] > paddle2["pos"]-10:  # If ball is in range of paddle width
             if ballacc["x"] > 0:                                                    # Only if ball is going towards the paddle
                 ballacc["x"] = -abs(ballacc["x"])               # Reverse x acceleration
-                ballacc["x"] -= 0.1                             # Increase ball speed
+                ballacc["x"] -= 0.25                            # Increase ball speed
                 ballacc["y"] = ballacc["y"]+paddle2["acc"]/2    # Influence ball y momentum with paddle's momentum
                 if ballacc["y"] >= 8 or ballacc["y"] <= -8:     # If ball is going too fast on y axis
                     ballacc["y"] /= 2                           # Slow it down
