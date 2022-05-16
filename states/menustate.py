@@ -29,7 +29,6 @@ def init(scrn,sett=None):   # Initiate state
     global clickSfx
     selected = -1
     screen = scrn                                                       # Get game's main screen
-    state.printMsg("Initiating Menu State...",3)
     print("Initiating Menu State")
     coinSfx = pygame.mixer.Sound(os.path.join("sounds", "score.wav"))   # Load coin sound effect
     clickSfx = pygame.mixer.Sound(os.path.join("sounds", "click.wav"))  # Load click sound effect
@@ -57,13 +56,13 @@ def draw(screen):
         
     else:                       # Draw main menu
         if controlscreen:
-            text = fonts["scorefont"].render("Controls", True, (255,255,255))
+            text = fonts["medfont"].render("Controls", True, (255,255,255))
             controls = [None,None,None,None,None]
             controls[0] = "PLAYER 1              PLAYER 2"
             controls[1] = "W                           UP"
             controls[2] = "S                            DOWN"
             controls[3] = ""
-            controls[4] = "Show FPS - F1  Screenshot - F10  ESC - Quit"
+            controls[4] = "Show FPS - F1, Screenshot - F10, ESC - Quit"
 
             offset = (text.get_size()[0]/2,text.get_size()[1]/2)                                # Get center of the window
             pos = ((size[0]/2)-offset[0],(size[1]/4)-offset[1])                                 # Center the title text
@@ -71,9 +70,9 @@ def draw(screen):
             for i in range(5):
                 contrltext = fonts["fpsfont"].render(controls[i], True, (255,255,255))          # Create controls text
                 if i == 4:
-                    pos = (120,200+(i*30))
+                    pos = (140,200+(i*30))
                 else:
-                    pos = (200,200+(i*30))
+                    pos = (220,200+(i*30))
                 screen.blit(contrltext,pos)
 
         else:
@@ -122,10 +121,10 @@ def mbuttonreleased(pos,button):
         if button == 1:
             if selected == 0:
                 clickSfx.play()
-                state.change("game",screen)             # Change to game state without AI enabled
+                state.change("game",screen,{"points":8})                    # Change to game state
             elif selected == 1:
                 clickSfx.play()
-                state.change("game",screen,{"ai":True}) # Change to game state with AI enabled
+                state.change("game",screen,{"points":8,"ai":True,"aidif":1}) # Change to game state with AI enabled
             elif selected == 2:
                 clickSfx.play()
                 controlscreen = True

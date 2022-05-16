@@ -14,12 +14,14 @@ from fontman import fonts
 from datetime import datetime
 
 # Import state modules
-import states.menustate as menu # Import menu state
-import states.gamestate as game # Import game state
+import states.menustate as menu      # Import menu state
+import states.gamestate as game      # Import game state
+import states.resultstate as result # Import result state
 
 states = {      # State dictionary
     "menu":menu,
-    "game":game
+    "game":game,
+    "result":result
 }
 
 # Variables

@@ -7,7 +7,7 @@ import pygame, sys, os      # Import important stuff
 import stateman as state    # Import the state manager  
 from fontman import fonts   # Import font list
 
-version = "dev_09.05.22"    # Version of the program
+version = "dev_16.05.22"    # Version of the program
 
 # Additional functions
 
@@ -32,6 +32,7 @@ def main(argc, argv):
     # Add fonts to the font manager
     fonts["fpsfont"] = pygame.font.Font(os.path.join("fonts", 'FFFFORWA.TTF'), 16)
     fonts["scorefont"] = pygame.font.Font(os.path.join("fonts", 'FFFFORWA.TTF'), 100)
+    fonts["medfont"] = pygame.font.Font(os.path.join("fonts", 'FFFFORWA.TTF'), 52)
     fonts["infofont"] = pygame.font.SysFont("Arial",16)
     # Setup stateman
     state.change("menu",screen)                             # Change state to "menu"
