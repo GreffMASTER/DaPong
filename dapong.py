@@ -4,11 +4,12 @@
 # Luke Lasok 2022
 
 import pygame, sys, os      # Import important stuff
+from pathlib import Path
 import stateman as state    # Import the state manager  
 from fontman import fonts   # Import font list
-os.chdir(sys._MEIPASS)
 
-version = "1.0"    # Version of the program
+version = "1.0.1"           # Version of the program
+homepath = Path.home()
 
 # Additional functions
 

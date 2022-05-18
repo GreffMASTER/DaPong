@@ -7,6 +7,7 @@
 
 print("Adding State Manager...")
 
+from dapong import homepath
 import sys, pygame, os
 import fontman                  # Import the font manager
 
@@ -22,6 +23,11 @@ states = {      # State dictionary
     "menu":menu,
     "game":game,
     "result":result
+}
+
+platform_dir = {
+    "win32":"AppData/Roaming",
+    "linux":".local/share"
 }
 
 # Variables
@@ -116,10 +122,18 @@ def takeScreenshot(scrn):           # Takes a screenshot of a given screen
     datestr = curtime.strftime("%d.%m.%Y_%H-%M-%S")                                 # Format the date and time
     x, y = scrn.get_size()
     rect = pygame.Rect(0, 0, x, y)                                                  # Select entire window
-    if not os.path.exists("screenshots"):                                           # If 'screenshots' folder doesn't exist, create it
-        os.mkdir("screenshots")
-    filename = "DaPongScreenshot_"+datestr+".png"                                   # Prepare filename string
-    pygame.image.save(scrn.subsurface(rect), os.path.join("screenshots", filename)) # Save screenshot
-    printMsg("Screenshot saved as "+filename,3)                                     # Display message
+    if sys.platform in platform_dir:
+        newpath = os.path.join(homepath,platform_dir[sys.platform],"DaPong")
+        if not os.path.exists(newpath):                                             # If 'DaPong' folder doesn't exist, create it
+            os.mkdir(newpath)
+            os.mkdir(os.path.join(newpath,"screenshots"))
+        if not os.path.exists(os.path.join(newpath,"screenshots")):                 # If 'screenshots' folder doesn't exist, create it'
+            os.mkdir(os.path.join(newpath,"screenshots"))
+    else:
+        newpath = homepath                                                          # Use home path as a last resort
+
+    filename = "DaPongScreenshot_"+datestr+".png"                                               # Prepare filename string
+    pygame.image.save(scrn.subsurface(rect), os.path.join(newpath ,"screenshots", filename))    # Save screenshot
+    printMsg("Screenshot saved as "+filename,3)                                                 # Display message
 
 # EOF
