@@ -6,6 +6,7 @@
 import pygame, sys, os      # Import important stuff
 import stateman as state    # Import the state manager  
 from fontman import fonts   # Import font list
+os.chdir(sys._MEIPASS)
 
 version = "1.0"    # Version of the program
 
