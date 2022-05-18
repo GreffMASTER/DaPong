@@ -1,4 +1,4 @@
-# dapong
+# DaPong
  A simple pong game, made using Python3 + PyGame  
  ![DaPong Banner](https://repository-images.githubusercontent.com/486916324/e1925e3e-b0ce-43d4-bd08-b3ed9e2388fd)  
 
