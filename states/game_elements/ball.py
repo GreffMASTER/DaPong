@@ -7,8 +7,13 @@ class ball:
         self.__speed = 0
         self.__size = 20
         self.__speed = spd
+        self.__prevpos = [self.__pos,self.__pos,self.__pos]
 
     def move(self,dt):
+        self.__prevpos[2] = self.__prevpos[1]
+        self.__prevpos[1] = self.__prevpos[0]
+        self.__prevpos[0] = self.__pos
+            
         multi = dt * self.__speed
         acx = self.__pos[0] + self.__accel[0] * multi
         acy = self.__pos[1] + self.__accel[1] * multi
@@ -53,8 +58,16 @@ class ball:
                         self.__accel = (self.__accel[0],self.__accel[1]/2)
                     return True
 
-    def draw(self,screen):
-        pygame.draw.circle(screen,(255,255,255),self.__pos,self.__size)
+    def draw(self,surface):
+        totalspeed = abs(self.__accel[0])+abs(self.__accel[1])
+        if totalspeed > 20:
+            pygame.draw.circle(surface,(255,255,255,32), self.__prevpos[2], self.__size)
+        if totalspeed > 15:
+            pygame.draw.circle(surface,(255,255,255,64), self.__prevpos[1], self.__size)
+        if totalspeed > 10:
+            pygame.draw.circle(surface,(255,255,255,128),self.__prevpos[0], self.__size)
+
+        pygame.draw.circle(surface,(255,255,255,255),    self.__pos,        self.__size)
 
     def setPos(self,x,y):
         self.__pos = (x,y)
@@ -81,6 +94,8 @@ class ball:
 
     def reset(self,x,y,direct=None):
         self.__pos = (x,y)
+        self.__prevpos = [self.__pos,self.__pos,self.__pos]
+
         if direct != None:
             direction = dir
         else:

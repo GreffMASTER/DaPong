@@ -4,16 +4,21 @@ print("Adding Menu State...")
 
 import stateman as state
 import dapong
-import os, sys
+import os, sys, pygame
 from fontman import fonts
 
-pygame = state.pygame       # Get pygame module from state manager
+class menuvars:
+    dt = 0
+    timer = 0
+    screen = None
+    selected = -1
+    titlescreen = True
+    controlscreen = False
+    ctrlhold = False
+    points = 8
+    balls = 1
 
-screen = None               # Game's main screen
-controlscreen = False
-titlescreen = True          # Determines if title screen should be displayed
-
-buttons = [["VS PLAYER",200,200,120,60],["VS CPU",400,200,120,60],["CONTROLS",200,300,120,60],["QUIT",400,300,120,60]]
+buttons = [["VS PLAYER",130,200,120,60],["POINTS",296,200,120,60],["VS CPU",460,200,120,60],["CONTROLS",130,300,120,60],["BALLS",296,300,120,60],["QUIT",460,300,120,60]]
 
 def drawRectOutline(scrn,x,y,w,h,bgc,olc):
     ol = pygame.Rect(x-4,y-4,w+8,h+8)
@@ -23,22 +28,26 @@ def drawRectOutline(scrn,x,y,w,h,bgc,olc):
 
 def init(scrn,sett=None):   # Initiate state
     global coinSfx
-    global screen
-    global selected
     global delta
     global clickSfx
-    selected = -1
-    screen = scrn                                                       # Get game's main screen
-    print("Initiating Menu State")
+    menuvars.ctrlhold = False
+    menuvars.timer = 0
+    menuvars.selected = -1
+    menuvars.screen = scrn                                               # Get game's main screen
     coinSfx = pygame.mixer.Sound(os.path.join("sounds", "score.wav"))   # Load coin sound effect
     clickSfx = pygame.mixer.Sound(os.path.join("sounds", "click.wav"))  # Load click sound effect
 
 def update(dt,clck):
-    delta = dt
+    menuvars.dt = dt
+    menuvars.timer += dt
+    if menuvars.titlescreen:
+        if menuvars.timer > 20:
+            state.change("game",menuvars.screen,{"points":99,"ai":True,"aidif":2,"demo":True,"ballcount":2}) # Change to game state with demo mode
+            menuvars.titlescreen = False
 
 def draw(screen):
     size = screen.get_size()    # Get window resolution
-    if titlescreen:             # Draw title screen
+    if menuvars.titlescreen:             # Draw title screen
     
         text = fonts["scorefont"].render("DaPong", True, (255,255,255))                     # Create title logo using big font
         text2 = fonts["fpsfont"].render("Insert coin or press Enter.", True, (255,255,255)) # Create subtitle text
@@ -55,7 +64,7 @@ def draw(screen):
         screen.blit(vertext,(5,size[1]-25))                     # Draw version text in the bottom left corner of the window
         
     else:                       # Draw main menu
-        if controlscreen:
+        if menuvars.controlscreen:
             text = fonts["medfont"].render("Controls", True, (255,255,255))
             controls = [None,None,None,None,None]
             controls[0] = "PLAYER 1              PLAYER 2"
@@ -87,24 +96,29 @@ def draw(screen):
             i = 0
             for b in buttons:
                 bt = fonts["fpsfont"].render(b[0], True, (255,255,255))
-                if selected == i:
+                if menuvars.selected == i:
                     drawRectOutline(screen,b[1],b[2],b[3],b[4],(128,128,128),(255,255,255))
                 else:
                     drawRectOutline(screen,b[1],b[2],b[3],b[4],(0,0,0),(255,255,255))
                 screen.blit(bt, (b[1],b[2]+2) )
                 i+=1
+            points = fonts["fpsfont"].render(str(menuvars.points), True, (255,255,255))
+            balls = fonts["fpsfont"].render(str(menuvars.balls), True, (255,255,255))
+            screen.blit(points, (296,238) )
+            screen.blit(balls, (296,338) )
     
     # END OF DRAW
 
 def keypressed(key,mod):
-    global titlescreen
-    global controlscreen
-    if controlscreen:
-        controlscreen = False
+    if key == pygame.K_LCTRL:
+        menuvars.ctrlhold = True
+
+    if menuvars.controlscreen:
+        menuvars.controlscreen = False
     else:
-        if titlescreen:
+        if menuvars.titlescreen:
             if key == pygame.K_RETURN:
-                titlescreen = False
+                menuvars.titlescreen = False
                 coinSfx.play()
             if key == pygame.K_ESCAPE:
                 sys.exit()
@@ -112,32 +126,54 @@ def keypressed(key,mod):
             if key == pygame.K_ESCAPE:
                 sys.exit()
 
+def keyreleased(key,mod):
+    if key == pygame.K_LCTRL:
+        menuvars.ctrlhold = False
+
 def mbuttonreleased(pos,button):
-    global selected
-    global controlscreen
-    if controlscreen:
-        controlscreen = False
+    if menuvars.controlscreen:
+        menuvars.controlscreen = False
     else:
         if button == 1:
-            if selected == 0:
+            if menuvars.selected == 0:
                 clickSfx.play()
-                state.change("game",screen,{"points":8})                    # Change to game state
-            elif selected == 1:
+                state.change("game",menuvars.screen,{"points":menuvars.points,"ballcount":menuvars.balls,"debug":menuvars.ctrlhold})                    # Change to game state
+            elif menuvars.selected == 1:
                 clickSfx.play()
-                state.change("game",screen,{"points":8,"ai":True,"aidif":1}) # Change to game state with AI enabled
-            elif selected == 2:
+                menuvars.points += 1
+                if menuvars.points > 24:
+                    menuvars.points = 1
+            elif menuvars.selected == 2:
                 clickSfx.play()
-                controlscreen = True
-            elif selected == 3:
+                state.change("game",menuvars.screen,{"points":menuvars.points,"ai":True,"aidif":1,"ballcount":menuvars.balls,"debug":menuvars.ctrlhold})              # Change to game state with AI enabled
+            elif menuvars.selected == 3:
+                clickSfx.play()
+                menuvars.controlscreen = True
+            elif menuvars.selected == 4:
+                clickSfx.play()
+                menuvars.balls += 1
+                if menuvars.balls > 10:
+                    menuvars.balls = 1
+            elif menuvars.selected == 5:
                 clickSfx.play()
                 sys.exit()
+        if button == 3:
+            if menuvars.selected == 1:
+                clickSfx.play()
+                menuvars.points -= 1
+                if menuvars.points < 1:
+                    menuvars.points = 24
+            elif menuvars.selected == 4:
+                clickSfx.play()
+                menuvars.balls -= 1
+                if menuvars.balls < 1:
+                    menuvars.balls = 10
 
 def mousemoved(pos,rel,buttns):
     mx = pos[0]
     my = pos[1]
-    if not titlescreen:
-        global selected
-        selected = -1
+    if not menuvars.titlescreen:
+        menuvars.selected = -1
         i = 0
         for b in buttons:
             x = b[1]
@@ -145,7 +181,7 @@ def mousemoved(pos,rel,buttns):
             w = b[3]
             h = b[4]
             if mx > x and mx < (x+w) and my > y and my < (y+h):
-                selected = i
+                menuvars.selected = i
             i+=1
 
 def quit():

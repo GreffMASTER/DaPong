@@ -7,7 +7,7 @@ import pygame, sys, os      # Import important stuff
 import stateman as state    # Import the state manager  
 from fontman import fonts   # Import font list
 
-version = "dev_16.05.22"    # Version of the program
+version = "1.0"    # Version of the program
 
 # Additional functions
 
@@ -17,7 +17,7 @@ def readArgs(argc, argv):   # Read arguments and change settings (currently unus
 def initPyGame(res,title):  # Initialize PyGame and setup game window
     pygame.init()                                                       # Initiate PyGame
     iconimg = pygame.image.load(os.path.join("graphics", "icon.png"))   # Load icon graphic
-    scrn = pygame.display.set_mode(res)                                 # Set window resolution
+    scrn = pygame.display.set_mode(res,0,0,0,1)                         # Set window resolution
     pygame.display.set_caption(title)                                   # Set window title
     pygame.display.set_icon(iconimg)                                    # Set window icon
     return scrn, True                                                   # Return screen and True allowing loop to run

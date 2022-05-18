@@ -10,6 +10,10 @@ class paddle:
         self.__speed = spd
         self.__limit = limit
 
+    def reset(self,x,y):
+        self.__pos = (x,y)
+        self.__accel = 0
+
     def update(self,dt,res):
         multi = dt * self.__speed
 

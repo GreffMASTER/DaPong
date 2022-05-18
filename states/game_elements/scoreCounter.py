@@ -12,7 +12,6 @@ class scoreCounter:
             self.__scores[i] = 0
 
     def setMaxScore(self,value):
-        print("Setting to",value,"points")
         self.__maxscore = value
     
     def addPoints(self,plyrindx,amount=1):
