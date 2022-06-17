@@ -3,6 +3,7 @@ print("Adding Game State...")
 # Imports
 
 import stateman as state
+import audioman as audio
 import math, os, random, pygame
 
 from fontman import fonts
@@ -62,9 +63,6 @@ paddleright = paddle(set.res[0]-50,160,25,100)
 # Functions
 
 def init(scrn,sett=None):
-    global scoreSfx
-    global wallBncSfx
-    global paddBncSfx
     # Reset all variables
     paddleleft.reset(25,160)
     paddleright.reset(set.res[0]-50,160)
@@ -91,11 +89,6 @@ def init(scrn,sett=None):
 
     set.screen = scrn
     set.res = scrn.get_size()
-
-    scoreSfx = pygame.mixer.Sound(os.path.join("sounds", "score.wav"))      # Load score sound effect
-    wallBncSfx = pygame.mixer.Sound(os.path.join("sounds", "wallBnc.wav"))  # Load wall bounce sound effect
-    paddBncSfx = pygame.mixer.Sound(os.path.join("sounds", "paddBnc.wav"))  # Load paddle bounce sound effect
-    
     set.xpos = set.res[0]/2
     set.ypos = set.res[1]/2
 
@@ -147,21 +140,21 @@ def update(dt,clock):
         gameball.move(dt)       # Move ball
 
         if gameball.logicFCCheck(set.res):  # Floor/Ceiling collisions
-            wallBncSfx.play()
+            audio.play("wallBncSfx")
 
         oobcheck = gameball.logicOOBCheck(set.res)  # Out of bounds check
 
         if oobcheck != None:                # If is out of bounds
             gamescore.addPoints(oobcheck)   # Give a point for a player
-            scoreSfx.play()
+            audio.play("scoreSfx")
             gameball.reset(set.res[0]/2, set.res[1]/2, oobcheck)    # Reset ball
 
         # Ball and paddles interaction
 
         if gameball.logicLeftPaddleBounce(set.res,paddleleft):
-            paddBncSfx.play()
+            audio.play("paddBncSfx")
         if gameball.logicRightPaddleBounce(set.res,paddleright):
-            paddBncSfx.play()
+            audio.play("paddBncSfx")
 
     set.counter+=dt                     # Increment state counter
 

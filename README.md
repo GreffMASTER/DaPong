@@ -22,4 +22,4 @@
 
 ## Credits
  Sound effects created using [jsfxr](https://sfxr.me/)  
- FFForward font made by The FFF Team (Fonts For Flash)
+ FFFForward font made by The FFF Team (Fonts For Flash)

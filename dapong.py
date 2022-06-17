@@ -5,10 +5,11 @@
 
 import pygame, sys, os      # Import important stuff
 from pathlib import Path
-import stateman as state    # Import the state manager  
+import stateman as state    # Import the state manager
+import audioman as audio    # Import the audio manager
 from fontman import fonts   # Import font list
 
-version = "1.0.1"           # Version of the program
+version = "1.1.0"           # Version of the program
 homepath = Path.home()
 
 # Additional functions

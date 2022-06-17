@@ -3,6 +3,7 @@ print("Adding Menu State...")
 # Imports
 
 import stateman as state
+import audioman as audio    # Import the audio manager
 import dapong
 import os, sys, pygame
 from fontman import fonts
@@ -34,8 +35,6 @@ def init(scrn,sett=None):   # Initiate state
     menuvars.timer = 0
     menuvars.selected = -1
     menuvars.screen = scrn                                               # Get game's main screen
-    coinSfx = pygame.mixer.Sound(os.path.join("sounds", "score.wav"))   # Load coin sound effect
-    clickSfx = pygame.mixer.Sound(os.path.join("sounds", "click.wav"))  # Load click sound effect
 
 def update(dt,clck):
     menuvars.dt = dt
@@ -119,7 +118,7 @@ def keypressed(key,mod):
         if menuvars.titlescreen:
             if key == pygame.K_RETURN:
                 menuvars.titlescreen = False
-                coinSfx.play()
+                audio.play("scoreSfx")
             if key == pygame.K_ESCAPE:
                 sys.exit()
         else:          
@@ -136,35 +135,35 @@ def mbuttonreleased(pos,button):
     else:
         if button == 1:
             if menuvars.selected == 0:
-                clickSfx.play()
+                audio.play("clickSfx")
                 state.change("game",menuvars.screen,{"points":menuvars.points,"ballcount":menuvars.balls,"debug":menuvars.ctrlhold})                    # Change to game state
             elif menuvars.selected == 1:
-                clickSfx.play()
+                audio.play("clickSfx")
                 menuvars.points += 1
                 if menuvars.points > 24:
                     menuvars.points = 1
             elif menuvars.selected == 2:
-                clickSfx.play()
+                audio.play("clickSfx")
                 state.change("game",menuvars.screen,{"points":menuvars.points,"ai":True,"aidif":1,"ballcount":menuvars.balls,"debug":menuvars.ctrlhold})              # Change to game state with AI enabled
             elif menuvars.selected == 3:
-                clickSfx.play()
+                audio.play("clickSfx")
                 menuvars.controlscreen = True
             elif menuvars.selected == 4:
-                clickSfx.play()
+                audio.play("clickSfx")
                 menuvars.balls += 1
                 if menuvars.balls > 10:
                     menuvars.balls = 1
             elif menuvars.selected == 5:
-                clickSfx.play()
+                audio.play("clickSfx")
                 sys.exit()
         if button == 3:
             if menuvars.selected == 1:
-                clickSfx.play()
+                audio.play("clickSfx")
                 menuvars.points -= 1
                 if menuvars.points < 1:
                     menuvars.points = 24
             elif menuvars.selected == 4:
-                clickSfx.play()
+                audio.play("clickSfx")
                 menuvars.balls -= 1
                 if menuvars.balls < 1:
                     menuvars.balls = 10
